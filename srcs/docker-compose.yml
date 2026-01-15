@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: requirements/wordpress/
+      dockerfile: Dockerfile
+      continer_name: wordpress
+      # fih chk
+      restart:  unless-stopped
+      #environment:
+      # ports: imkn ma3ndhash ports
+      networks:
+          - inception-network
+
+  database:
+    build:
+      context: requirements/mariadb/
+      dockerfile: Dockerfile
+      continer_name: mariadb
+
+      volumes:
+          - mariadb_data:/home/habenydi/data/DataBase
+      networks:
+          - inception-network
+
+
+  server:
+    build:
+      context: requirements/nginx/
+      dockerfile: Dockerfile
+      continer_name: nginx
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+          - wordpress_data:/home/habenydi/data/WordPress
+      networks:
+          - inception-network
+
+networks:
+    inception-network:
+      driver: bridge
+
+volumes:
+    mariadb_data:
