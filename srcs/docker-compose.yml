@@ -1,44 +1,70 @@
-services:
-  app:
-    build:
-      context: requirements/wordpress/
-      dockerfile: Dockerfile
-      continer_name: wordpress
-      # fih chk
-      restart:  unless-stopped
-      #environment:
-      # ports: imkn ma3ndhash ports
-      networks:
-          - inception-network
+version: '3.8'
 
-  database:
-    build:
-      context: requirements/mariadb/
-      dockerfile: Dockerfile
-      continer_name: mariadb
+service:
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    restart: unless-stop
+    env_file: .env
+    secrets:
+      - db_root_password
+      - db_password
+      - wp_admin_user
+    volumes:
+      - db_volume:/var/lib/mysql
+    networks:
+      - inception-network
 
-      volumes:
-          - mariadb_data:/home/habenydi/data/DataBase
-      networks:
-          - inception-network
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    restart: unless-stop
+    env_file: .env
+    secrets:
+      - db_password
+      - wp_admin_user
+    volumes:
+      - wp_volume:/var/www/html
+    networks:
+      - inception-network
+    depends-on:
+      - mariadb
 
-
-  server:
-    build:
-      context: requirements/nginx/
-      dockerfile: Dockerfile
-      continer_name: nginx
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-          - wordpress_data:/home/habenydi/data/WordPress
-      networks:
-          - inception-network
-
-networks:
-    inception-network:
-      driver: bridge
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    restart: unless-stop
+    ports:
+      - "443:443"
+    volumes:
+      - wp_volume:/home/habenydi/data/wp
+    networks:
+      - inception-network
+    depends-on:
+      - wordpress
 
 volumes:
-    mariadb_data:
+  db_volume:
+    driver: local
+    driver-opts:
+      type: none
+      device: /home/habenydi/data/db
+      o: bind
+  wp_volume:
+    driver: local
+    driver-opts:
+      type: none
+      device: /home/habenydi/data/wp
+      o: bind
+
+networks:
+  inception-network:
+    driver: bridge
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password
+  db_password:
+    file: ../secrets/db_password
+  wp_admin_user:
+    file: ../secrets/wp_admin_user
