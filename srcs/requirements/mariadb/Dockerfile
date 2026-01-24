@@ -8,7 +8,7 @@ RUN apt-get update && \
         mariadb-client && \
     rm -rf /var/lib/apt/lists/*
 
-COPY setup.sh /setup.sh
+COPY conf/setup.sh /setup.sh
 
 RUN chmod +x /setup.sh
 
