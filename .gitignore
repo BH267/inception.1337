@@ -1,2 +1,4 @@
-srcs/.env
 secrets
+srcs/.env
+srcs/.not-docker-compose.yml
+srcs/requirements/nginx/*.pem
