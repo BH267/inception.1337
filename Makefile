@@ -11,14 +11,16 @@ up: build
 	docker-compose -p $(NAME) -f $(COMPOSE_FILE) up -d 
 
 down:
-	docker-compose -f $(COMPOSE_FILE) down
+	docker-compose -p $(NAME) -f $(COMPOSE_FILE) down
 
 re: down up
 
 clean:
 	docker system prune -f
 
-fclean: down
+whole-clean: down clean
 	docker volume prune -f
+	sudo rm -rf /home/habenydi/data/db/*
+	sudo rm -rf /home/habenydi/data/wp/*
 
 .PHONY: all build up down re clean fclean
