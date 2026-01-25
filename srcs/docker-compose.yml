@@ -4,7 +4,7 @@ services:
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
-    restart: unless-stop
+    restart: always
     env_file: .env
     secrets:
       - db_root_password
@@ -18,7 +18,7 @@ services:
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
-    restart: unless-stop
+    restart: always
     env_file: .env
     secrets:
       - db_password
@@ -33,7 +33,7 @@ services:
   nginx:
     build: ./requirements/nginx
     container_name: nginx
-    restart: unless-stop
+    restart: always
     ports:
       - "443:443"
     volumes:
