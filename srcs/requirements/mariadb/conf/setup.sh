@@ -14,16 +14,18 @@ GRANT ALL PRIVILEGES ON *.* TO '${WP_ADMIN_USER}'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOF
 
-mysqld_safe --datadir=/var/lib/mysql &
+rm -f /var/run/mysqld/mysqld.pid
+rm -f /var/lib/mysql/*.pid
+
+echo "Starting MariaDB..."
+mysqld_safe --datadir=/var/lib/mysql --skip-networking=0 &
 
 until mysqladmin ping -h localhost --silent; do
     sleep 1
 done
 
-# run secure init
+echo "Initializing database..."
 mysql -u root < /tmp/init-secure.sql
 
-# keep logs visible
-tail -F /var/log/mysql/error.log &
-
-exec mysqld_safe --datadir=/var/lib/mysql
+echo "MariaDB ready. Switching to foreground..."
+exec mysqld --datadir=/var/lib/mysql --console
