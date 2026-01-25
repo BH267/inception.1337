@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+        wget \
         mariadb-server \
         mariadb-client && \
     rm -rf /var/lib/apt/lists/*
