@@ -1,6 +1,6 @@
 version: '3.8'
 
-service:
+services:
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
@@ -27,7 +27,7 @@ service:
       - wp_volume:/var/www/html
     networks:
       - inception-network
-    depends-on:
+    depends_on:
       - mariadb
 
   nginx:
@@ -37,22 +37,22 @@ service:
     ports:
       - "443:443"
     volumes:
-      - wp_volume:/home/habenydi/data/wp
+      - wp_volume:/var/www/html
     networks:
       - inception-network
-    depends-on:
+    depends_on:
       - wordpress
 
 volumes:
   db_volume:
     driver: local
-    driver-opts:
+    driver_opts:
       type: none
       device: /home/habenydi/data/db
       o: bind
   wp_volume:
     driver: local
-    driver-opts:
+    driver_opts:
       type: none
       device: /home/habenydi/data/wp
       o: bind
