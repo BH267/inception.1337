@@ -3,7 +3,9 @@ FROM debian:bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends nginx && \
+    apt-get install -y --no-install-recommends \
+    openssl \
+    nginx && \
     rm -rf /var/lib/apt/lists/*
 
 RUN rm -f /etc/nginx/sites-enabled/default
