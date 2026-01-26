@@ -9,6 +9,7 @@ define('DB_PASSWORD', $db_password);
 define('DB_HOST', 'mariadb');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
+define('WP_DEBUG', true);
 
 // Security keys
 define('AUTH_KEY',         'hassan13dev');
