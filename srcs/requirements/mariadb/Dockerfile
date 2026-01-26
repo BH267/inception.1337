@@ -14,7 +14,9 @@ RUN apt-get update && \
 RUN wget -O /usr/local/bin/gosu https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64 && \
     chmod +x /usr/local/bin/gosu
 
-COPY conf/setup.sh /setup.sh
+COPY conf/mariadb.cnf /etc/mysql/mariadb.conf.d/99-inception.cnf
+
+COPY tools/setup.sh /setup.sh
 
 RUN chmod +x /setup.sh
 
