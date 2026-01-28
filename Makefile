@@ -22,7 +22,7 @@ clean:
 
 whole-clean: down clean
 	docker volume prune -f
-	sudo rm -rf /home/habenydi/data/db/*
-	sudo rm -rf /home/habenydi/data/wp/*
+	sudo rm -rf /home/habenydi/data/{db,wp}/*
+	sudo rm -rf /home/habenydi/data/db/.initialized
 
 .PHONY: all build up down re clean fclean
