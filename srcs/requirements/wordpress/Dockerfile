@@ -13,6 +13,7 @@ RUN apt-get update && \
         php8.2-zip \
         php8.2-opcache \
         ca-certificates \
+	mariadb-client \
         wget \
         unzip && \
     rm -rf /var/lib/apt/lists/*
