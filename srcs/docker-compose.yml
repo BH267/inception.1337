@@ -15,6 +15,15 @@ services:
     networks:
       - inception_network
 
+  redis:
+    build: ./requirements/bonus/redis
+    container_name: redis
+    restart: always
+    volumes:
+      - redis_volume:/data
+    networks:
+      - inception_network
+
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
@@ -29,6 +38,7 @@ services:
       - inception_network
     depends_on:
       - mariadb
+      - redis
 
   nginx:
     build: ./requirements/nginx
@@ -43,6 +53,17 @@ services:
     depends_on:
       - wordpress
 
+  adminer:
+    build: ./requirements/bonus/adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - inception_network
+    depends_on:
+      - mariadb
+
 volumes:
   db_volume:
     driver: local
@@ -55,6 +76,12 @@ volumes:
     driver_opts:
       type: none
       device: /home/habenydi/data/wp
+      o: bind
+  redis_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/habenydi/data/redis
       o: bind
 
 networks:
