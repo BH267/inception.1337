@@ -20,6 +20,9 @@ hot-restart: down whole-clean up
 clean:
 	docker system prune -f
 
+fclean: clean
+	docker volume prune -f
+
 whole-clean: down clean
 	docker volume prune -f
 	sudo rm -rf /home/habenydi/data/{db,wp}/*
