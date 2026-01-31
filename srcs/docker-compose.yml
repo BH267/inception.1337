@@ -64,6 +64,42 @@ services:
     depends_on:
       - mariadb
 
+  ftp:
+    build: ./requirements/bonus/ftp
+    container_name: ftp
+    restart: always
+    secrets:
+      - db_password
+    volumes:
+      - wp_volume:/var/www/html
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    networks:
+      - inception_network
+    depends_on:
+      - wordpress
+
+  portainer:
+    build: ./requirements/bonus/portainer
+    container_name: portainer
+    restart: always
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - inception_network
+
+  website:
+    build: ./requirements/bonus/website
+    container_name: website
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      - inception_network
+
 volumes:
   db_volume:
     driver: local

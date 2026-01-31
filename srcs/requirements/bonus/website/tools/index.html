@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inception Dashboard - habenydi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 8px;
+        }
+        .service {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .service h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.online { background: #27ae60; color: white; }
+        .status.info { background: #f39c12; color: white; }
+        pre {
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Inception Project Dashboard</h1>
+        <p>habenydi • 42 School Project</p>
+    </div>
+
+    <div class="service">
+        <h3>🌐 WordPress Site</h3>
+        <p><strong>Status:</strong> <span class="status online">ONLINE</span></p>
+        <p>Your WordPress installation is running and accessible.</p>
+        <a href="https://habenydi.42.fr" target="_blank">Visit WordPress →</a>
+    </div>
+
+    <div class="service">
+        <h3>📊 Adminer Database GUI</h3>
+        <p><strong>Status:</strong> <span class="status info">LOCAL ACCESS</span></p>
+        <p>Database management interface (accessible from host machine).</p>
+        <pre>Host: http://[VM_IP]:8080
+Server: mariadb
+Username: wpuser</pre>
+    </div>
+
+    <div class="service">
+        <h3>💾 Redis Cache</h3>
+        <p><strong>Status:</strong> <span class="status online">ACTIVE</span></p>
+        <p>Object caching enabled for improved performance.</p>
+    </div>
+
+    <div class="service">
+        <h3>📁 FTP Access</h3>
+        <p><strong>Status:</strong> <span class="status info">CONFIGURED</span></p>
+        <p>File transfer access to WordPress directory.</p>
+        <pre>Host: [VM_IP]
+Port: 21
+Username: wpuser</pre>
+    </div>
+
+    <div class="service">
+        <h3>🔒 Security Features</h3>
+        <ul>
+            <li>TLS 1.2/1.3 only</li>
+            <li>Secrets mounted at runtime</li>
+            <li>No hardcoded passwords</li>
+            <li>Data persistence in /home/habenydi/data/</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Built with ❤️ using Docker • Inception Project • 42 School</p>
+    </div>
+</body>
+</html>
