@@ -96,7 +96,7 @@ services:
     container_name: website
     restart: always
     ports:
-      - "80:80"
+      - "1337:80"
     networks:
       - inception_network
 
