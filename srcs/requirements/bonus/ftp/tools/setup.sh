@@ -1,11 +1,9 @@
 #!/bin/bash
 set -e
 
-# Create the secure chroot directory
 mkdir -p /var/run/vsftpd/empty
 
-# Get the container's IP or use the host IP
-FTP_IP=${FTP_IP:-10.14.57.10}
+FTP_IP=${FTP_IP:-10.14.57.3}
 
 cat > /etc/vsftpd.conf <<EOF
 listen=YES
