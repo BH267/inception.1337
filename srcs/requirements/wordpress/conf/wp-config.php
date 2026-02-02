@@ -19,20 +19,6 @@ define('WP_REDIS_READ_TIMEOUT', 1);
 define('WP_REDIS_DATABASE', 0);
 define('WP_CACHE', true);
 
-# Install and activate Redis Object Cache plugin
-if [ ! -d /var/www/wordpress/wp-content/plugins/redis-cache ]; then
-    echo "Installing Redis Object Cache plugin..."
-    wp plugin install redis-cache --activate --allow-root --path=/var/www/wordpress > /dev/null 2>&1
-    echo "Redis plugin installed!"
-fi
-
-# Enable Redis object cache
-if ! wp redis status --allow-root --path=/var/www/wordpress 2>/dev/null | grep -q "Connected"; then
-    echo "Enabling Redis cache..."
-    wp redis enable --allow-root --path=/var/www/wordpress 2>/dev/null || true
-    echo "Redis cache enabled!"
-fi
-
 // Security keys
 define('AUTH_KEY',         'hassan13dev');
 define('SECURE_AUTH_KEY',  'hassan13dev');
@@ -42,6 +28,10 @@ define('AUTH_SALT',        'hassan13dev');
 define('SECURE_AUTH_SALT', 'hassan13dev');
 define('LOGGED_IN_SALT',   'hassan13dev');
 define('NONCE_SALT',       'hassan13dev');
+
+define( 'FTP_USER', 'wpuser' );
+define( 'FTP_PASS', $db_password );
+define( 'FTP_HOST', '10.14.57.3' );
 
 $table_prefix = 'wp_';
 

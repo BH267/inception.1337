@@ -18,6 +18,9 @@ RUN apt-get update && \
         unzip && \
     rm -rf /var/lib/apt/lists/*
 
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /usr/local/bin/wp && \
+    chmod +x /usr/local/bin/wp
+
 RUN sed -i 's/listen = \/run\/php\/php8.2-fpm.sock/listen = 9000/' /etc/php/8.2/fpm/pool.d/www.conf && \
     sed -i 's/;listen.owner = www-data/listen.owner = www-data/' /etc/php/8.2/fpm/pool.d/www.conf && \
     sed -i 's/;listen.group = www-data/listen.group = www-data/' /etc/php/8.2/fpm/pool.d/www.conf
@@ -28,13 +31,17 @@ RUN wget https://wordpress.org/wordpress-6.5.tar.gz && \
     tar -xzf wordpress-6.5.tar.gz --strip-components=1 && \
     rm wordpress-6.5.tar.gz
 
-COPY wp-config.php ./wp-config.php
+COPY conf/wp-config.php ./wp-config.php
 
 RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 644 /var/www/html
 
 RUN echo "log_errors = On" >> /etc/php/8.2/fpm/php.ini && \
     echo "error_log = /proc/self/fd/2" >> /etc/php/8.2/fpm/php.ini
 
+COPY tools/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 9000
 
-CMD ["php-fpm8.2", "--nodaemonize"]
+ENTRYPOINT ["/entrypoint.sh"]
