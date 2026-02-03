@@ -3,7 +3,7 @@ set -e
 
 export DB_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
 export DB_PASSWORD=$(cat /run/secrets/db_password)
-export WP_ADMIN_USER=$(cat /run/secrets/wp_admin_user)
+export WP_ADMIN_USER=$WP_ADMIN_USER
 
 mkdir -p /var/lib/mysql /var/run/mysqld
 chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
