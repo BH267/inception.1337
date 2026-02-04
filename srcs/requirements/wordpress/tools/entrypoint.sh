@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-chown -R www-data:www-data /var/www/html 2>/dev/null || true
-find /var/www/html -type d -exec chmod 755 {} + 2>/dev/null || true
-find /var/www/html -type f -exec chmod 644 {} + 2>/dev/null || true
-chmod -R 777 /var/www/html/wp-content 2>/dev/null || true
-
-
 echo "Waiting for MariaDB..."
 while ! mysqladmin ping -h mariadb -u wpuser -p$(cat /run/secrets/db_password) --silent; do
     sleep 2
@@ -61,6 +55,7 @@ if wp core is-installed --allow-root --path=/var/www/html 2>/dev/null; then
 fi
 
 chmod -R 777 /var/www/html/
+chown -R www-data:www-data /var/www/html
 
 echo "Starting PHP-FPM..."
 exec php-fpm8.2 --nodaemonize

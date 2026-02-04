@@ -34,10 +34,6 @@ RUN wget https://wordpress.org/wordpress-6.5.tar.gz && \
 
 COPY conf/wp-config.php ./wp-config.php
 
-RUN chown -R www-data:www-data /var/www/html
-RUN find /var/www/html -type d -exec chmod -R 755 {} + && \
-    find /var/www/html -type f -exec chmod -R 644 {} +
-
 RUN echo "log_errors = On" >> /etc/php/8.2/fpm/php.ini && \
     echo "error_log = /proc/self/fd/2" >> /etc/php/8.2/fpm/php.ini
 
