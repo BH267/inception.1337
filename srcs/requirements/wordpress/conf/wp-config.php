@@ -31,7 +31,7 @@ define('NONCE_SALT',       $wp_security_key);
 
 define('FTP_USER', getenv('MYSQL_USER'));
 define('FTP_PASS', $db_password);
-define('FTP_HOST', getenv('HOST_IP'));
+define('FTP_HOST',  getenv('HOST_IP'));//'10.14.57.3');//'localhost');
 
 $table_prefix = 'wp_';
 

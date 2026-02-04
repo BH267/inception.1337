@@ -23,7 +23,8 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 
 RUN sed -i 's/listen = \/run\/php\/php8.2-fpm.sock/listen = 9000/' /etc/php/8.2/fpm/pool.d/www.conf && \
     sed -i 's/;listen.owner = www-data/listen.owner = www-data/' /etc/php/8.2/fpm/pool.d/www.conf && \
-    sed -i 's/;listen.group = www-data/listen.group = www-data/' /etc/php/8.2/fpm/pool.d/www.conf
+    sed -i 's/;listen.group = www-data/listen.group = www-data/' /etc/php/8.2/fpm/pool.d/www.conf && \
+    sed -i 's/^;clear_env\s*=\s*no/clear_env = no/' /etc/php/8.2/fpm/pool.d/www.conf
 
 WORKDIR /var/www/html
 
@@ -34,7 +35,8 @@ RUN wget https://wordpress.org/wordpress-6.5.tar.gz && \
 COPY conf/wp-config.php ./wp-config.php
 
 RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 644 /var/www/html
+RUN find /var/www/html -type d -exec chmod -R 755 {} + && \
+    find /var/www/html -type f -exec chmod -R 644 {} +
 
 RUN echo "log_errors = On" >> /etc/php/8.2/fpm/php.ini && \
     echo "error_log = /proc/self/fd/2" >> /etc/php/8.2/fpm/php.ini

@@ -1,12 +1,19 @@
 #!/bin/bash
 set -e
 
-# Wait for MariaDB to be ready
+chown -R www-data:www-data /var/www/html 2>/dev/null || true
+find /var/www/html -type d -exec chmod 755 {} + 2>/dev/null || true
+find /var/www/html -type f -exec chmod 644 {} + 2>/dev/null || true
+chmod -R 777 /var/www/html/wp-content 2>/dev/null || true
+
+
 echo "Waiting for MariaDB..."
 while ! mysqladmin ping -h mariadb -u wpuser -p$(cat /run/secrets/db_password) --silent; do
     sleep 2
 done
 echo "MariaDB is ready!"
+
+WP_URL="https://${HOST_IP:-localhost}"
 
 if ! wp core is-installed --allow-root --path=/var/www/html 2>/dev/null; then
     echo "WordPress not installed. Installing..."
@@ -22,7 +29,7 @@ if ! wp core is-installed --allow-root --path=/var/www/html 2>/dev/null; then
 	fi
 
 	wp core install \
-	  --url="https://$HOST_IP" \
+	  --url="$WP_URL" \
 	  --title="inception" \
 	  --admin_user="$WP_ADMIN_USER" \
 	  --admin_password="$(cat $WP_ADMIN_PASSWORD_FILE)" \
@@ -43,6 +50,17 @@ if ! wp core is-installed --allow-root --path=/var/www/html 2>/dev/null; then
 	    echo "Redis cache enabled!"
 	fi
 fi
+
+if wp core is-installed --allow-root --path=/var/www/html 2>/dev/null; then
+       current_siteurl=$(wp option get siteurl --allow-root --path=/var/www/html 2>/dev/null || true)
+       current_home=$(wp option get home --allow-root --path=/var/www/html 2>/dev/null || true)
+       if [ "$current_siteurl" != "$WP_URL" ] || [ "$current_home" != "$WP_URL" ]; then
+               wp option update siteurl "$WP_URL" --allow-root --path=/var/www/html >/dev/null 2>&1 || true
+               wp option update home "$WP_URL" --allow-root --path=/var/www/html >/dev/null 2>&1 || true
+       fi
+fi
+
+chmod -R 777 /var/www/html/
 
 echo "Starting PHP-FPM..."
 exec php-fpm8.2 --nodaemonize
